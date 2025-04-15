@@ -1,0 +1,3 @@
+>> página de qr code
+>>> página onde faz a ação
+>>>> registra a entrada ou saída do funcionário no banco de dados:
