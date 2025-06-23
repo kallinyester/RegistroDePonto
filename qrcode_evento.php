@@ -1,12 +1,12 @@
 <?php
 
-include_once("Conexao.php");
-include_once("tokensDAO.php");
-include_once("tokens.php");
-include_once("phpqrcode/qrlib.php");
+require('verificaLogin.php');
+require('C:\xampp\htdocs\RegistroPonto\phpqrcode/qrlib.php');
+require('C:\xampp\htdocs\RegistroPonto\DAO\Conexao.php');
+require('C:\xampp\htdocs\RegistroPonto\tokens.php');
 
 $objeto = new tokens();
-$token = $objeto->E_gerar_token();
+$token = $objeto->evento_gerar_token();
 
 ?>
 
@@ -16,7 +16,7 @@ $token = $objeto->E_gerar_token();
     <link rel="icon" type="image/png" href="https://i.postimg.cc/NMjbycNV/AdeApoio.png">
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="10">
-    <title>Painel de QR Code Efetivos</title>
+    <title>Painel de QR Code Registro de Ponto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body { 
@@ -62,10 +62,10 @@ $token = $objeto->E_gerar_token();
     </style>
 </head>
 <body>
-    <h1>Escaneie para registrar seu ponto</h1>
+    <h1>Escaneie para registrar sua presença</h1>
     <div class="container">
-        <p>Efetivo, use seu celular para registrar o ponto</p>
-        <img class="qr" src="qrcode.png" alt="QR Code de Registro">
+        <p>Use seu celular</p>
+        <img class="qr" src="evento_qrcode.png?nocache=<?= time() ?>" alt="QR Code de Registro">
         <img class="footer" src="https://i.postimg.cc/13H5gqZf/Apoio.png" alt="Logo rodapé">
     </div>
 </body>

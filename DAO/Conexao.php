@@ -1,10 +1,10 @@
 <?php
 
 class Conexao{    
-    private $host = 'localhost:3306'; // Host (Servidor) que executa o banco de dados
-    private $user = 'root'; // Usuário que se conecta ao servidor de banco de dados
+    private $host = ''; // Host (Servidor) que executa o banco de dados
+    private $user = ''; // Usuário que se conecta ao servidor de banco de dados
     private $pass = ''; // Senha do usuário para conexão ao banco de dados
-    private $db = 'ch_apoio'; // Nome do banco de dados a ser utilizado
+    private $db = 'registro'; // Nome do banco de dados a ser utilizado
     private $sql; // String da consulta SQL a ser executada
     
     function Conexao(){
@@ -14,8 +14,21 @@ class Conexao{
         $this->$prop = $value;
     }
 
+    function getConnection() {
+    $con = new mysqli($this->host, $this->user, $this->pass, $this->db);
+    $con->set_charset("utf8");
+
+        if ($con->connect_errno) {
+            die("Falha na conexão: " . $con->connect_error);
+        }
+
+        return $con;
+    }
+
     function query() {
         $con = new mysqli($this->host, $this->user, $this->pass, $this->db);
+        $con->set_charset("utf8");
+
         if ($con->connect_errno) {
             echo "Falha ao conectar: (" . $con->connect_errno . ") " . $con->connect_error;
         }
