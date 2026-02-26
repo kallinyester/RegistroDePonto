@@ -48,7 +48,7 @@ class registrosDAO {
             $_SESSION['login'] = $this->usuario; // Login Completo
             header('Location: ../qrcode.php');
         } else {
-            echo "Nome e/ou senha incorretos!";
+            return "Nome e/ou senha incorretos!";
         }
     }
 
@@ -319,5 +319,4 @@ class registrosDAO {
         }
     }
 }
-
 ?>
