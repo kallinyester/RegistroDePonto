@@ -1,6 +1,6 @@
 <div align="center">
 
-# Registro de Ponto
+# Registro de Ponto Apoio Consultoria
 
 **Sistema de controle de presença por QR Code**
 
@@ -15,16 +15,17 @@
 
 ## Sobre o Projeto
 
-O **Registro de Ponto** é uma aplicação web desenvolvida em PHP que automatiza o controle de presença através da leitura de QR Codes. O sistema suporta três contextos diferentes — **sede**, **evento** e **RG** — cada um com seu próprio QR Code. Basta escanear com o celular e o registro é feito automaticamente, sem nenhuma digitação.
+O **Registro de Ponto** é uma aplicação web desenvolvida em PHP para a **Apoio Consultoria**, que controla a entrada e saída de membros da sede. Ao escanear o QR Code com o celular, o membro é direcionado a uma página (form) onde informa seu tipo (efetivo ou trainee), seleciona seu nome na lista e marca se está **entrando ou saindo** da sede. O registro é salvo automaticamente com data e hora no banco de dados.
 
-> **Fluxo resumido:** Escaneia o QR Code → sistema registra data, hora e local → administrador consulta no painel.
+> **Fluxo resumido:** Escaneia o QR Code → preenche o formulário → sistema registra data, hora e movimento → administrador consulta no painel.
 
 ---
 
 ## Funcionalidades
 
-- **Registro automático** — basta escanear o QR Code para registrar presença
-- **3 contextos de registro** — sede, evento externo e identificação por RG
+- **Registro via QR Code** — escaneia e abre direto o formulário de ponto
+- **Seleção de membro** — escolha entre efetivo ou trainee e seleciona o nome na lista
+- **Entrada e saída** — o membro marca se está chegando ou saindo da sede
 - **Painel administrativo** — visualização e gestão de todos os registros
 - **Acesso protegido** — painel restrito com autenticação por sessão PHP
 - **Arquitetura em camadas** — padrão DAO para separação entre lógica e banco de dados
@@ -60,16 +61,18 @@ RegistroDePonto/
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│  1️⃣  Usuário escaneia o QR Code com o celular              │
+│  1️⃣  Membro escaneia o QR Code com o celular               │
 │                         ⬇                                   │
-│  2️⃣  Navegador abre a URL do PHP correspondente            │
-│       (sede / evento / RG)                                  │
+│  2️⃣  Navegador abre a página de registro (/resgistro)      │
 │                         ⬇                                   │
-│  3️⃣  /resgistro captura data, hora e tipo de local         │
+│  3️⃣  Membro seleciona: tipo (efetivo/trainee),             │
+│       nome e entrada ou saída                               │
 │                         ⬇                                   │
-│  4️⃣  DAO executa INSERT no banco de dados MySQL            │
+│  4️⃣  Sistema captura data e hora do servidor               │
 │                         ⬇                                   │
-│  5️⃣  Registro aparece no /painel para o administrador      │
+│  5️⃣  DAO executa INSERT no banco de dados MySQL            │
+│                         ⬇                                   │
+│  6️⃣  Registro aparece no /painel para o administrador      │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -79,21 +82,27 @@ RegistroDePonto/
 ## Páginas e Componentes
 
 ### QR Codes (`qrcode_sede.php` · `qrcode_evento.php` · `qrcode_rg.php`)
-Geram as imagens QR Code salvas no servidor. Cada arquivo aponta para a URL de registro do seu contexto. Ao ser escaneado, o usuário é redirecionado automaticamente para o PHP de registro correspondente.
+Geram as imagens QR Code salvas no servidor. Cada arquivo codifica a URL da página de registro correspondente ao seu contexto. O QR Code fica fixado na sede — ao ser escaneado pelo celular, abre diretamente o formulário de registro de ponto.
 
 > _[Insira aqui os prints dos QR Codes gerados para cada contexto]_
 
 ---
 
 ### Tela de Registro (`/resgistro`)
-Página acessada automaticamente após o escaneamento. Captura a data e hora do servidor, identifica o tipo de local pelo arquivo chamado e persiste o registro no banco via DAO. O usuário vê uma confirmação visual na tela — nenhuma ação manual é necessária.
+Página principal de interação do membro. É acessada ao escanear o QR Code e apresenta um formulário com três campos obrigatórios:
+
+- **Tipo de membro** — efetivo ou trainee
+- **Nome** — selecionado em uma lista (sem digitação livre)
+- **Movimento** — entrada ou saída da sede
+
+Após o envio, o sistema captura automaticamente a data e hora do servidor e persiste o registro no banco via DAO. O membro recebe uma confirmação visual na tela.
 
 > _[Insira aqui o print da tela de confirmação de registro]_
 
 ---
 
 ### Painel Administrativo (`/painel`)
-Área restrita ao administrador. Exibe todos os registros de ponto com data, hora e local. Permite filtrar por período ou contexto e oferece uma visão consolidada da presença. Só pode ser acessado após autenticação válida.
+Área restrita ao administrador da Apoio Consultoria. Exibe todos os registros de ponto com nome do membro, tipo (efetivo/trainee), movimento (entrada/saída), data e hora. Permite filtrar por período e oferece uma visão consolidada da presença na sede. Só pode ser acessado após autenticação válida.
 
 > _[Insira aqui o print do painel com a listagem de registros]_
 
@@ -108,9 +117,10 @@ Incluído no topo de todas as páginas restritas. Verifica se há uma sessão PH
 Implementam o padrão **DAO** (*Data Access Object*), encapsulando todas as queries SQL. As páginas PHP chamam funções do DAO sem escrever SQL diretamente, tornando o código mais organizado e fácil de manter.
 
 Operações típicas:
-- `inserirRegistro($tipo, $data, $hora)` — salva um novo ponto
+- `inserirRegistro($nome, $tipo, $movimento, $data, $hora)` — salva um novo ponto
 - `listarRegistros($filtro)` — retorna registros para o painel
 - `buscarPorData($inicio, $fim)` — filtra por período
+- `listarMembros($tipo)` — retorna a lista de nomes por tipo (efetivo/trainee)
 
 ---
 
@@ -192,7 +202,8 @@ http://localhost/RegistroDePonto/qrcode_rg.php
 
 **6. Use o sistema**
 
-- Imprima ou exiba os QR Codes — ao serem escaneados, os registros são salvos automaticamente
+- Imprima ou exiba o QR Code na sede — ao ser escaneado, abre o formulário de registro
+- O membro seleciona seu tipo, nome e se está entrando ou saindo
 - Acesse `/painel` com login de administrador para visualizar os registros
 
 ---
