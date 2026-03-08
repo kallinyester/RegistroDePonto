@@ -1,12 +1,11 @@
 <?php
 
-include_once('verificaLogin.php');
-include_once('C:\xampp\htdocs\CH2\phpqrcode/qrlib.php');
+include_once('C:\xampp\htdocs\CH2\phpqrcode\qrlib.php');
 include_once('C:\xampp\htdocs\CH2\DAO\Conexao.php');
-include_once('C:\xampp\htdocs\CH2\qrcodeDAO.php');
+include_once('C:\xampp\htdocs\CH2\DAO\qrcodeDAO.php');
 
-$objeto = new tokens();
-$token = $objeto->rg_gerar_qrcode();
+$objeto = new gerar_qrcode();
+$qrcode = $objeto->rg_gerar_qrcode();
 
 ?>
 
