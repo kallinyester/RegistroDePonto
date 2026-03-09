@@ -110,12 +110,14 @@ Após o envio, o sistema captura automaticamente a data e hora do servidor e per
 ### Painel Administrativo (`/painel`)
 Área restrita ao administrador da Apoio Consultoria. Exibe todos os registros de ponto com nome do membro, tipo (efetivo/trainee), movimento (entrada/saída), data e hora. Permite filtrar por período e oferece uma visão consolidada da presença na sede. Só pode ser acessado após autenticação válida.
 
-> _[Insira aqui o print do painel com a listagem de registros]_
+> <img width="1919" height="862" alt="image" src="https://github.com/user-attachments/assets/203d08cf-85fc-4e4c-b0a8-cd6afeeee3c8" />
 
 ---
 
 ### Controle de Acesso (`verificaLogin.php`)
 Incluído no topo de todas as páginas restritas. Verifica se há uma sessão PHP ativa; caso contrário, redireciona para o login. É a "porteira" do sistema — sem ele, qualquer pessoa com a URL poderia acessar os dados.
+
+><img width="1919" height="859" alt="image" src="https://github.com/user-attachments/assets/b1162121-7f93-4063-99a0-637141d64f9b" />
 
 ---
 
