@@ -61,18 +61,18 @@ RegistroDePonto/
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│  1️⃣  Membro escaneia o QR Code com o celular               │
+│  1. Membro escaneia o QR Code com o celular                 │
 │                         ⬇                                   │
-│  2️⃣  Navegador abre a página de registro (/resgistro)      │
+│  2. Navegador abre a página de registro (/resgistro)        │
 │                         ⬇                                   │
-│  3️⃣  Membro seleciona: tipo (efetivo/trainee),             │
-│       nome e entrada ou saída                               │
+│  3️. Membro seleciona: tipo (efetivo/trainee),               │
+│     nome e entrada ou saída                                 │
 │                         ⬇                                   │
-│  4️⃣  Sistema captura data e hora do servidor               │
+│  4️. Sistema captura data e hora do servidor                 │
 │                         ⬇                                   │
-│  5️⃣  DAO executa INSERT no banco de dados MySQL            │
+│  5️. DAO executa INSERT no banco de dados MySQL              │
 │                         ⬇                                   │
-│  6️⃣  Registro aparece no /painel para o administrador      │
+│  6️. Registro aparece no /painel para o administrador        │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -81,15 +81,19 @@ RegistroDePonto/
 
 ## Páginas e Componentes
 
+### Página Inicial (`qrcode.php`)
+
+> <img width="1919" height="863" alt="image" src="https://github.com/user-attachments/assets/bf512963-66c8-4617-8540-2a7f61e234f5" />
+
 ### QR Codes (`qrcode_sede.php` · `qrcode_evento.php` · `qrcode_rg.php`)
 Geram as imagens QR Code salvas no servidor. Cada arquivo codifica a URL da página de registro correspondente ao seu contexto. O QR Code fica fixado na sede — ao ser escaneado pelo celular, abre diretamente o formulário de registro de ponto.
 
-> _[Insira aqui os prints dos QR Codes gerados para cada contexto]_
+> <img width="1919" height="862" alt="image" src="https://github.com/user-attachments/assets/eb29d918-3f11-430c-ad6b-e8339464e57c" />
 
 ---
 
 ### Tela de Registro (`/resgistro`)
-Página principal de interação do membro. É acessada ao escanear o QR Code e apresenta um formulário com três campos obrigatórios:
+Página de registro. É acessada ao escanear o QR Code e apresenta um formulário com três campos obrigatórios:
 
 - **Tipo de membro** — efetivo ou trainee
 - **Nome** — selecionado em uma lista (sem digitação livre)
@@ -97,7 +101,9 @@ Página principal de interação do membro. É acessada ao escanear o QR Code e 
 
 Após o envio, o sistema captura automaticamente a data e hora do servidor e persiste o registro no banco via DAO. O membro recebe uma confirmação visual na tela.
 
-> _[Insira aqui o print da tela de confirmação de registro]_
+> <img width="1919" height="869" alt="image" src="https://github.com/user-attachments/assets/f49323fe-07e1-47f9-a621-bdd430bba938" />
+> <img width="1919" height="860" alt="image" src="https://github.com/user-attachments/assets/c47b3643-6ee0-4947-bd3b-8d961f7e21ce" />
+> <img width="1919" height="860" alt="image" src="https://github.com/user-attachments/assets/f501e9a5-70bc-4ee4-8ccb-c51995fafe21" />
 
 ---
 
